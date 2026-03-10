@@ -27,3 +27,12 @@ data_raw <- read_csv("data/36730769_Min Aung.csv")
 clean_data <- data_raw |>
   clean_names() |>
   distinct()
+
+## Introduction
+
+This report analyses data from a personalised marketing campaign conducted by an online retailer over the last quarter. The campaign varied the level of marketing spend across individual customers through advertisements, emails, and promotional offers. The purpose of this analysis is to investigate whether higher marketing spend per customer is associated with higher purchase amounts. Understanding this relationship helps evaluate whether increased marketing investment results in stronger sales outcomes.
+
+## Research Question
+
+The research question explored in this report is whether customers who receive higher marketing spend tend to make larger purchases. The analysis focuses on examining the relationship between marketing spend and purchase amount using summary statistics and visualisations. This investigation aims to assess whether increased marketing investment is associated with higher customer spending.
+
