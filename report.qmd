@@ -1,0 +1,29 @@
+---
+title: "Assignment 1: Marketing Campaign Analysis"
+author: "Min"
+format:
+  html:
+    theme: cosmo
+    toc: true
+  pdf: default
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r}
+#| include: false
+
+library(tidyverse)
+library(janitor)
+library(knitr)
+library(kableExtra)
+
+# load dataset
+data_raw <- read_csv("data/36730769_Min Aung.csv")
+
+# preliminary cleaning
+clean_data <- data_raw |>
+  clean_names() |>
+  distinct()
