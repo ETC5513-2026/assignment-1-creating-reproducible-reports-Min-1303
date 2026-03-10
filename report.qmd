@@ -21,12 +21,15 @@ library(knitr)
 library(kableExtra)
 
 # load dataset
-data_raw <- read_csv("data/36730769_Min Aung.csv")
+data_raw <- read_csv("data/36730769_Min Aung.csv", show_col_types = FALSE)
 
 # preliminary cleaning
 clean_data <- data_raw |>
   clean_names() |>
-  distinct()
+  distinct() |>
+  select(-notes) |>
+  filter(is.finite(purchase_amount), is.finite(marketing_spend))
+```
 
 ## Introduction
 
@@ -36,3 +39,67 @@ This report analyses data from a personalised marketing campaign conducted by an
 
 The research question explored in this report is whether customers who receive higher marketing spend tend to make larger purchases. The analysis focuses on examining the relationship between marketing spend and purchase amount using summary statistics and visualisations. This investigation aims to assess whether increased marketing investment is associated with higher customer spending.
 
+## Dataset Introduction
+
+The dataset contains customer-level information from a personalised marketing campaign conducted by an online retailer. Each observation represents an individual customer and includes variables describing marketing activity and purchasing behaviour. Key variables include **marketing_spend**, which records the amount spent targeting each customer, and **purchase_amount**, which records the value of purchases made by the customer. Prior to analysis, the dataset was cleaned by standardising column names, removing duplicate observations, excluding the notes column, and filtering out invalid numeric values in key variables. These steps ensure the dataset is consistent and suitable for analysis.
+
+### Dataset Description
+
+The cleaned dataset contains `r nrow(clean_data)` observations and `r ncol(clean_data)` variables.
+The dataset includes variables describing customer marketing exposure and purchasing behaviour. Important variables used in this analysis are **marketing_spend**, **visits**, and **purchase_amount**.
+
+```{r}
+#| tbl-cap: "Summary of variables and their data types."
+
+variable_table <- tibble(
+  variable = names(clean_data),
+  type = sapply(clean_data, class)
+)
+
+kable(variable_table)
+```
+
+```{r}
+#| fig-cap: "Distribution of customer purchase amounts."
+
+ggplot(clean_data, aes(x = purchase_amount)) +
+  geom_histogram(bins = 20) +
+  labs(
+    x = "Purchase Amount",
+    y = "Number of Customers"
+  )
+```
+
+## Results
+
+The relationship between marketing spend and purchase amount is explored using visualisations. @fig-spend-purchase illustrates the association between marketing spend per customer and purchase amount. @fig-spend-group compares purchase amounts across groups of marketing spend levels. These figures help assess whether higher marketing investment is associated with increased customer purchasing behaviour.
+
+```{r}
+#| label: fig-spend-purchase
+#| fig-cap: "Relationship between marketing spend and purchase amount."
+
+ggplot(clean_data, aes(x = marketing_spend, y = purchase_amount)) +
+  geom_point(alpha = 0.7) +
+  geom_smooth(method = "lm", se = TRUE) +
+  labs(
+    x = "Marketing Spend",
+    y = "Purchase Amount"
+  )
+```
+
+```{r}
+#| label: fig-spend-group
+#| fig-cap: "Purchase amounts across marketing spend quartiles."
+
+clean_data |>
+  mutate(spend_group = ntile(marketing_spend, 4)) |>
+  ggplot(aes(x = factor(spend_group), y = purchase_amount)) +
+  geom_boxplot() +
+  labs(
+    x = "Marketing Spend Quartile",
+    y = "Purchase Amount"
+  )
+```
+
+The visualisations suggest a positive relationship between marketing spend and purchase amount. In @fig-spend-purchase, the fitted trend line indicates that customers receiving higher marketing spend tend to generate higher purchase amounts.
+@fig-spend-group further shows that customers in higher marketing spend groups generally have larger purchase values compared with those in lower spend groups. This suggests that increased marketing investment may be associated with higher customer purchases, although this analysis does not establish causality.
