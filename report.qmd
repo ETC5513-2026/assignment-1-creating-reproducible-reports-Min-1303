@@ -1,6 +1,6 @@
 ---
 title: "Assignment 1: Marketing Campaign Analysis"
-author: "Min"
+author: "Min Khant Aung"
 format:
   html:
     theme: cosmo
