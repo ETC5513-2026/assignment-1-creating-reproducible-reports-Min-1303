@@ -44,7 +44,7 @@ editor: visual
 
 ![Query 5.1](images/clipboard-243051756.png)
 
-![Query 5.2](images/Screenshot 2026-03-29 163337.png)
+![Query 5.2](images/Screenshot%202026-03-29%20163337.png)
 
 **Query 6: Interpreting analysis results**
 
